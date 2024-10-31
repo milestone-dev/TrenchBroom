@@ -211,6 +211,7 @@ public: // misc actions
   void resetCameraZoom();
   void cancel();
   void deactivateTool();
+  void switchToShapeTool(size_t idx);
 
 public: // reparenting objects
   void addSelectedObjectsToGroup();

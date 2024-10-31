@@ -1658,6 +1658,15 @@ bool MapFrame::clipToolActive() const
   return m_mapView->clipToolActive();
 }
 
+void MapFrame::toggleShapeTool(size_t shapeToolExtensionIndex) {
+  m_mapView->toggleShapeTool(shapeToolExtensionIndex);
+}
+
+bool MapFrame::shapeToolActive(size_t shapeToolExtensionIndex) const
+{
+  return m_mapView->shapeToolActive(shapeToolExtensionIndex);
+}
+
 void MapFrame::toggleRotateObjectsTool()
 {
   if (canToggleRotateObjectsTool())

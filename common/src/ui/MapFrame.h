@@ -287,6 +287,9 @@ public:
   bool canToggleClipTool() const;
   bool clipToolActive() const;
 
+  void toggleShapeTool(size_t shapeToolExtensionIndex);
+  bool shapeToolActive(size_t shapeToolExtensionIndex) const;
+
   void toggleRotateObjectsTool();
   bool canToggleRotateObjectsTool() const;
   bool rotateObjectsToolActive() const;

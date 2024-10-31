@@ -59,4 +59,9 @@ bool DrawShapeToolExtensionManager::setCurrentExtensionIndex(size_t currentExten
   return false;
 }
 
+bool DrawShapeToolExtensionManager::isExtensionIndexActive(size_t extensionIndex)
+{
+  return m_currentExtensionIndex == extensionIndex;
+}
+
 } // namespace tb::ui

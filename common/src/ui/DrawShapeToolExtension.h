@@ -57,6 +57,7 @@ public:
 
   DrawShapeToolExtension& currentExtension();
   bool setCurrentExtensionIndex(size_t currentExtensionIndex);
+  bool isExtensionIndexActive(size_t extensionIndex);
 
 private:
   std::vector<std::unique_ptr<DrawShapeToolExtension>> m_extensions;

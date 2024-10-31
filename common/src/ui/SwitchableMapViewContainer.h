@@ -107,9 +107,11 @@ public:
   bool vertexToolActive() const;
   bool edgeToolActive() const;
   bool faceToolActive() const;
+  bool shapeToolActive(size_t shapeToolExtensionIndex) const;
   void toggleVertexTool();
   void toggleEdgeTool();
   void toggleFaceTool();
+  bool toggleShapeTool(size_t shapeToolExtensionIndex) const;
   VertexTool& vertexTool();
   EdgeTool& edgeTool();
   FaceTool& faceTool();

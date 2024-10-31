@@ -66,6 +66,16 @@ bool DrawShapeTool::cancel()
   return m_extensionManager.setCurrentExtensionIndex(0);
 }
 
+void DrawShapeTool::setExtensionIndex(size_t idx)
+{
+  m_extensionManager.setCurrentExtensionIndex(idx);
+}
+
+bool DrawShapeTool::isExtensionIndexActive(size_t idx)
+{
+  return false;
+}
+
 QWidget* DrawShapeTool::doCreatePage(QWidget* parent)
 {
   return new DrawShapeToolPage{m_document, m_extensionManager, parent};

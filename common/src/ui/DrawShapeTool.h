@@ -37,6 +37,8 @@ public:
   void update(const vm::bbox3d& bounds, vm::axis::type axis);
 
   bool cancel();
+  void setExtensionIndex(size_t idx);
+  bool isExtensionIndexActive(size_t idx);
 
 private:
   DrawShapeToolExtensionManager m_extensionManager;

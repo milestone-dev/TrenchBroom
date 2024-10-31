@@ -59,6 +59,7 @@
 #include "ui/Actions.h"
 #include "ui/Animation.h"
 #include "ui/EnableDisableTagCallback.h"
+#include "ui/DrawShapeTool.h"
 #include "ui/FlashSelectionAnimation.h"
 #include "ui/GLContextManager.h"
 #include "ui/Grid.h"
@@ -623,10 +624,17 @@ void MapViewBase::cancel()
   }
 }
 
+void MapViewBase::switchToShapeTool(size_t idx)
+{
+  m_toolBox.deactivateAllTools();
+  m_toolBox.drawShapeTool().setExtensionIndex(idx);
+}
+
 void MapViewBase::deactivateTool()
 {
   m_toolBox.deactivateAllTools();
 }
+
 
 void MapViewBase::createPointEntity()
 {

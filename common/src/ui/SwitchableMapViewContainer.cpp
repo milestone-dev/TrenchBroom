@@ -25,6 +25,7 @@
 #include "Preferences.h"
 #include "mdl/PointTrace.h"
 #include "render/MapRenderer.h"
+#include "ui/DrawShapeTool.h"
 #include "ui/FourPaneMapView.h"
 #include "ui/GLContextManager.h"
 #include "ui/Inspector.h"
@@ -245,6 +246,11 @@ bool SwitchableMapViewContainer::edgeToolActive() const
 bool SwitchableMapViewContainer::faceToolActive() const
 {
   return m_toolBox->faceToolActive();
+}
+
+bool SwitchableMapViewContainer::shapeToolActive(size_t shapeToolExtensionIndex) const
+{
+  return m_toolBox->drawShapeTool().isExtensionIndexActive(shapeToolExtensionIndex);
 }
 
 void SwitchableMapViewContainer::toggleVertexTool()

@@ -1594,6 +1594,21 @@ void ActionManager::createEditMenu()
     },
     std::filesystem::path{"NoTool.svg"},
   }));
+  toolMenu.addItem(addAction(Action{
+    "Controls/Map view/Activate Cylinder Shape",
+    QObject::tr("Activate Cylinder Shape"),
+    ActionContext::Any,
+    QKeySequence{+Qt::Key_Y},
+    [](auto& context) { context.view()->switchToShapeTool(1); },
+    [](const auto& context) {
+          return context.hasDocument() && !context.frame()->anyToolActive();
+    },
+    [](const auto& context) {
+      return context.hasDocument() && context.frame()->shapeToolActive(1);
+    },
+    std::filesystem::path{"NoTool.svg"},
+  }));
+
 
   auto& csgMenu = editMenu.addMenu("CSG");
   csgMenu.addItem(addAction(Action{
