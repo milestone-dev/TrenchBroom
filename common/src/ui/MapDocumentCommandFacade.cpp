@@ -50,6 +50,8 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <random>
 
 namespace tb::ui
 {
@@ -161,6 +163,21 @@ void MapDocumentCommandFacade::performSelectAllNodes()
   auto* target = currentGroupOrWorld();
   const auto nodesToSelect =
     mdl::collectSelectableNodes(target->children(), *m_editorContext);
+  performSelect(nodesToSelect);
+}
+
+void MapDocumentCommandFacade::performSelectRandomNodes()
+{
+  performDeselectAll();
+
+  auto* target = currentGroupOrWorld();
+  auto nodesToSelect =
+    mdl::collectSelectableNodes(target->children(), *m_editorContext);
+  std::random_device rd;
+  size_t keep_count  = nodesToSelect.size() - (rand() % nodesToSelect.size());
+  std::mt19937 gen(rd());
+  std::shuffle(nodesToSelect.begin(), nodesToSelect.end(), gen);
+  nodesToSelect.resize(keep_count);
   performSelect(nodesToSelect);
 }
 

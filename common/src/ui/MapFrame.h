@@ -252,6 +252,7 @@ public:
   bool canDeleteSelection() const;
 
   void selectAll();
+  void selectRandom();
   void selectSiblings();
   void selectTouching();
   void selectInside();

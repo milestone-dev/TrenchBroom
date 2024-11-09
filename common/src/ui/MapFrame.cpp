@@ -1449,6 +1449,15 @@ void MapFrame::selectAll()
   }
 }
 
+void MapFrame::selectRandom()
+{
+  if (canSelect())
+  {
+    m_document->selectRandomNodes();
+  }
+}
+
+
 void MapFrame::selectSiblings()
 {
   if (canSelectSiblings())

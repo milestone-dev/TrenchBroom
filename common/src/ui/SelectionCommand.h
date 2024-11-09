@@ -58,6 +58,7 @@ public:
 
   static std::unique_ptr<SelectionCommand> convertToFaces();
   static std::unique_ptr<SelectionCommand> selectAllNodes();
+  static std::unique_ptr<SelectionCommand> selectRandomNodes();
   static std::unique_ptr<SelectionCommand> selectAllFaces();
 
   static std::unique_ptr<SelectionCommand> deselect(std::vector<mdl::Node*> nodes);

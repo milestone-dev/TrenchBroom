@@ -41,7 +41,8 @@ enum class SelectionCommand::Action
   ConvertToFaces,
   DeselectNodes,
   DeselectFaces,
-  DeselectAll
+  DeselectAll,
+  SelectRandomNodes
 };
 
 std::unique_ptr<SelectionCommand> SelectionCommand::select(std::vector<mdl::Node*> nodes)
@@ -69,6 +70,14 @@ std::unique_ptr<SelectionCommand> SelectionCommand::selectAllNodes()
 {
   return std::make_unique<SelectionCommand>(
     Action::SelectAllNodes,
+    std::vector<mdl::Node*>{},
+    std::vector<mdl::BrushFaceHandle>{});
+}
+
+std::unique_ptr<SelectionCommand> SelectionCommand::selectRandomNodes()
+{
+  return std::make_unique<SelectionCommand>(
+    Action::SelectRandomNodes,
     std::vector<mdl::Node*>{},
     std::vector<mdl::BrushFaceHandle>{});
 }
@@ -145,6 +154,9 @@ std::string SelectionCommand::makeName(
     result << "Deselect " << faceCount << " "
            << kdl::str_plural(faceCount, "Brush Face", "Brush Faces");
     break;
+  case Action::SelectRandomNodes:
+    result << "Select Random Objects";
+    break;
   case Action::DeselectAll:
     return "Select None";
     switchDefault();
@@ -172,6 +184,9 @@ std::unique_ptr<CommandResult> SelectionCommand::doPerformDo(
       | kdl::is_success());
   case Action::SelectAllNodes:
     document.performSelectAllNodes();
+    return std::make_unique<CommandResult>(true);
+  case Action::SelectRandomNodes:
+    document.performSelectRandomNodes();
     return std::make_unique<CommandResult>(true);
   case Action::SelectAllFaces:
     document.performSelectAllBrushFaces();

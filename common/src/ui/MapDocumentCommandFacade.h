@@ -63,6 +63,7 @@ public: // selection modification
   void performSelect(const std::vector<mdl::Node*>& nodes);
   void performSelect(const std::vector<mdl::BrushFaceHandle>& faces);
   void performSelectAllNodes();
+  void performSelectRandomNodes();
   void performSelectAllBrushFaces();
   void performConvertToBrushFaceSelection();
 

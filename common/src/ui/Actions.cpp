@@ -480,6 +480,36 @@ void ActionManager::createViewActions()
     [](auto& context) { context.view()->move(vm::direction::down); },
     [](const auto& context) { return context.hasDocument(); },
   });
+  addAction(Action{
+    std::filesystem::path{"Controls/Map view/Move objects forward; Move objects randomly"},
+    QObject::tr("Move Random"),
+    ActionContext::AnyView | ActionContext::NodeSelection | ActionContext::AnyVertexTool
+      | ActionContext::RotateTool | ActionContext::NoTool,
+    QKeySequence{},
+    [](auto& context) {
+          if (rand() % 2 == 1) context.view()->move(vm::direction::down);
+          else if (rand() % 2 == 1) context.view()->move(vm::direction::up);
+          else if (rand() % 2 == 1) context.view()->move(vm::direction::left);
+          else if (rand() % 2 == 1) context.view()->move(vm::direction::right);
+          else if (rand() % 2 == 1) context.view()->move(vm::direction::forward);
+          else if (rand() % 2 == 1) context.view()->move(vm::direction::backward);
+      },
+    [](const auto& context) { return context.hasDocument(); },
+  });
+
+  addAction(Action{
+    "Menu/Edit/Select Random",
+    QObject::tr("Select Random"),
+    ActionContext::Any,
+    QKeySequence{},
+    [](auto& context) {
+        context.frame()->selectNone();
+        context.frame()->selectRandom();
+      },
+    [](const auto& context) {
+      return context.hasDocument() && context.frame()->canSelect();
+    },
+  });
 
   /* ========== Duplication ========== */
   // these preference paths are structured like "action in 2D view; action in 3D view"

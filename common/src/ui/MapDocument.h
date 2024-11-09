@@ -401,6 +401,7 @@ public: // selection
   void setCurrentMaterialName(const std::string& currentMaterialName);
 
   void selectAllNodes() override;
+  void selectRandomNodes() override;
   void selectSiblings() override;
   void selectTouching(bool del) override;
   void selectInside(bool del) override;

@@ -91,6 +91,7 @@ public: // selection
 
   virtual void selectAllNodes() = 0;
   virtual void selectSiblings() = 0;
+  virtual void selectRandomNodes() = 0;
   virtual void selectTouching(bool del) = 0;
   virtual void selectInside(bool del) = 0;
   virtual void selectInverse() = 0;

@@ -1263,6 +1263,12 @@ void MapDocument::selectAllNodes()
   executeAndStore(SelectionCommand::selectAllNodes());
 }
 
+void MapDocument::selectRandomNodes()
+{
+  m_repeatStack->clearOnNextPush();
+  executeAndStore(SelectionCommand::selectRandomNodes());
+}
+
 void MapDocument::selectSiblings()
 {
   const auto& nodes = selectedNodes().nodes();
