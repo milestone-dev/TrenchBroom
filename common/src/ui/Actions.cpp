@@ -480,47 +480,7 @@ void ActionManager::createViewActions()
     [](auto& context) { context.view()->move(vm::direction::down); },
     [](const auto& context) { return context.hasDocument(); },
   });
-  addAction(Action{
-    std::filesystem::path{"Controls/Map view/Move objects forward; Move objects randomly"},
-    QObject::tr("Move Random"),
-    ActionContext::AnyView | ActionContext::NodeSelection | ActionContext::AnyVertexTool
-      | ActionContext::RotateTool | ActionContext::NoTool,
-    QKeySequence{},
-    [](auto& context) {
-          if (rand() % 2 == 1) context.view()->move(vm::direction::down);
-          else if (rand() % 2 == 1) context.view()->move(vm::direction::up);
-          else if (rand() % 2 == 1) context.view()->move(vm::direction::left);
-          else if (rand() % 2 == 1) context.view()->move(vm::direction::right);
-          else if (rand() % 2 == 1) context.view()->move(vm::direction::forward);
-          else if (rand() % 2 == 1) context.view()->move(vm::direction::backward);
-      },
-    [](const auto& context) { return context.hasDocument(); },
-  });
-
-  addAction(Action{
-    "Menu/Edit/Select Random",
-    QObject::tr("Select Random"),
-    ActionContext::Any,
-    QKeySequence{},
-    [](auto& context) {
-        context.frame()->selectNone();
-        context.frame()->selectRandom();
-      },
-    [](const auto& context) {
-      return context.hasDocument() && context.frame()->canSelect();
-    },
-  });
-  addAction(Action{
-    "Menu/Edit/Randomize Vertices",
-    QObject::tr("Randomize Vertices"),
-    ActionContext::Any,
-    QKeySequence{},
-    [](auto& context) { context.frame()->randomizeVertices(); },
-    [](const auto& context) {
-      return context.hasDocument() && context.frame()->canSnapVertices();
-    },
-  });
-
+  
   /* ========== Duplication ========== */
   // these preference paths are structured like "action in 2D view; action in 3D view"
   addAction(Action{
@@ -1485,29 +1445,54 @@ void ActionManager::createEditMenu()
   }));
   editMenu.addSeparator();
 
+  
   editMenu.addItem(addAction(Action{
-    std::filesystem::path{"Controls/Map view/Flip objects horizontally"},
-    QObject::tr("Flip Horizontally"),
-    ActionContext::AnyView | ActionContext::NodeSelection | ActionContext::AnyOrNoTool,
-    QKeySequence{+Qt::CTRL + Qt::Key_F},
-    [](auto& context) { context.view()->flipObjects(vm::direction::left); },
-    [](const auto& context) {
-      return context.hasDocument() && context.view() && context.view()->canFlipObjects();
+    std::filesystem::path{
+      "Controls/Map view/Move objects forward; Move objects randomly"},
+    QObject::tr("Move Random"),
+    ActionContext::AnyView | ActionContext::NodeSelection | ActionContext::AnyVertexTool
+      | ActionContext::RotateTool | ActionContext::NoTool,
+    QKeySequence{},
+    [](auto& context) {
+      if (rand() % 2 == 1)
+        context.view()->move(vm::direction::down);
+      else if (rand() % 2 == 1)
+        context.view()->move(vm::direction::up);
+      else if (rand() % 2 == 1)
+        context.view()->move(vm::direction::left);
+      else if (rand() % 2 == 1)
+        context.view()->move(vm::direction::right);
+      else if (rand() % 2 == 1)
+        context.view()->move(vm::direction::forward);
+      else if (rand() % 2 == 1)
+        context.view()->move(vm::direction::backward);
     },
-    std::filesystem::path{"FlipHorizontally.svg"},
+    [](const auto& context) { return context.hasDocument(); },
   }));
   editMenu.addItem(addAction(Action{
-    std::filesystem::path{"Controls/Map view/Flip objects vertically"},
-    QObject::tr("Flip Vertically"),
-    ActionContext::AnyView | ActionContext::NodeSelection | ActionContext::AnyOrNoTool,
-    QKeySequence{+Qt::CTRL + Qt::ALT + Qt::Key_F},
-    [](auto& context) { context.view()->flipObjects(vm::direction::up); },
-    [](const auto& context) {
-      return context.hasDocument() && context.view() && context.view()->canFlipObjects();
+    "Menu/Edit/Select Random",
+    QObject::tr("Select Random"),
+    ActionContext::Any,
+    QKeySequence{},
+    [](auto& context) {
+      context.frame()->selectNone();
+      context.frame()->selectRandom();
     },
-    std::filesystem::path{"FlipVertically.svg"},
+    [](const auto& context) {
+      return context.hasDocument() && context.frame()->canSelect();
+    },
   }));
-  editMenu.addSeparator();
+  editMenu.addItem(addAction(Action{
+    "Menu/Edit/Randomize Vertices",
+    QObject::tr("Randomize Vertices"),
+    ActionContext::Any,
+    QKeySequence{},
+    [](auto& context) { context.frame()->randomizeVertices(); },
+    [](const auto& context) {
+      return context.hasDocument() && context.frame()->canSnapVertices();
+    },
+  }));
+
 
   auto& toolMenu = editMenu.addMenu("Tools");
   toolMenu.addItem(addAction(Action{
@@ -1727,6 +1712,29 @@ void ActionManager::createEditMenu()
     QKeySequence{},
     [](auto& context) { context.frame()->replaceMaterial(); },
     [](const auto& context) { return context.hasDocument(); },
+  }));
+  editMenu.addSeparator();
+  editMenu.addItem(addAction(Action{
+    std::filesystem::path{"Controls/Map view/Flip objects horizontally"},
+    QObject::tr("Flip Horizontally"),
+    ActionContext::AnyView | ActionContext::NodeSelection | ActionContext::AnyOrNoTool,
+    QKeySequence{+Qt::CTRL + Qt::Key_F},
+    [](auto& context) { context.view()->flipObjects(vm::direction::left); },
+    [](const auto& context) {
+      return context.hasDocument() && context.view() && context.view()->canFlipObjects();
+    },
+    std::filesystem::path{"FlipHorizontally.svg"},
+  }));
+  editMenu.addItem(addAction(Action{
+    std::filesystem::path{"Controls/Map view/Flip objects vertically"},
+    QObject::tr("Flip Vertically"),
+    ActionContext::AnyView | ActionContext::NodeSelection | ActionContext::AnyOrNoTool,
+    QKeySequence{+Qt::CTRL + Qt::ALT + Qt::Key_F},
+    [](auto& context) { context.view()->flipObjects(vm::direction::up); },
+    [](const auto& context) {
+      return context.hasDocument() && context.view() && context.view()->canFlipObjects();
+    },
+    std::filesystem::path{"FlipVertically.svg"},
   }));
 }
 

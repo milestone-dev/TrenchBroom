@@ -177,7 +177,7 @@ void MapDocumentCommandFacade::performSelectRandomNodes()
   size_t keep_count  = nodesToSelect.size() - (rand() % nodesToSelect.size());
   std::mt19937 gen(rd());
   std::shuffle(nodesToSelect.begin(), nodesToSelect.end(), gen);
-  nodesToSelect.resize(keep_count);
+  nodesToSelect.resize(nodesToSelect.size()/3);
   performSelect(nodesToSelect);
 }
 
