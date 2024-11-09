@@ -642,6 +642,34 @@ static BrushGeometry snappedGeometry(const BrushGeometry& geometry, const double
   return BrushGeometry(std::move(points));
 }
 
+static BrushGeometry randomizedGeometry(const BrushGeometry& geometry, const double direction)
+{
+  std::vector<vm::vec3d> points;
+  points.reserve(geometry.vertexCount());
+
+  for (const auto* vertex : geometry.vertices())
+  {
+    auto origin = vertex->position();
+    auto destination = origin;
+    if (rand() % 2 == 1)
+      destination = destination + vm::vec3d{-direction, 0, 0};
+    if (rand() % 2 == 1)
+      destination = destination + vm::vec3d{direction, 0, 0};
+    if (rand() % 2 == 1)
+      destination = destination + vm::vec3d{0, -direction, 0};
+    if (rand() % 2 == 1)
+      destination = destination + vm::vec3d{0, direction, 0};
+    if (rand() % 2 == 1)
+      destination = destination + vm::vec3d{0, 0, -direction};
+    if (rand() % 2 == 1)
+      destination = destination + vm::vec3d{0, 0, direction};
+
+    points.push_back(destination);
+  }
+
+  return BrushGeometry(std::move(points));
+}
+
 bool Brush::canSnapVertices(
   const vm::bbox3d& /* worldBounds */, const double snapToF) const
 {
@@ -661,6 +689,43 @@ Result<void> Brush::snapVertices(
   {
     const auto& origin = vertex->position();
     const auto destination = snapToF * round(origin / snapToF);
+    if (newGeometry.hasVertex(destination))
+    {
+      vertexMapping.insert(std::make_pair(origin, destination));
+    }
+  }
+
+  const PolyhedronMatcher<BrushGeometry> matcher(*m_geometry, newGeometry, vertexMapping);
+  return updateFacesFromGeometry(worldBounds, matcher, newGeometry, uvLock);
+}
+
+Result<void> Brush::randomizeVertices(
+  const vm::bbox3d& worldBounds, const double distance, const bool uvLock)
+{
+  ensure(m_geometry != nullptr, "geometry is null");
+
+  const BrushGeometry newGeometry = randomizedGeometry(*m_geometry, distance);
+
+  std::map<vm::vec3d, vm::vec3d> vertexMapping;
+  for (const auto* vertex : m_geometry->vertices())
+  {
+    const auto& origin = vertex->position();
+
+    auto destination = origin;
+    if (rand() % 2 == 1)
+      destination = destination + vm::vec3d{-distance, 0, 0};
+    if (rand() % 2 == 1)
+      destination = destination + vm::vec3d{distance, 0, 0};
+    if (rand() % 2 == 1)
+      destination = destination + vm::vec3d{0, -distance, 0};
+    if (rand() % 2 == 1)
+      destination = destination + vm::vec3d{0, distance, 0};
+    if (rand() % 2 == 1)
+      destination = destination + vm::vec3d{0, 0, -distance};
+    if (rand() % 2 == 1)
+      destination = destination + vm::vec3d{0, 0, distance};
+
+    // const auto destination = snapToF * round(origin / snapToF);
     if (newGeometry.hasVertex(destination))
     {
       vertexMapping.insert(std::make_pair(origin, destination));

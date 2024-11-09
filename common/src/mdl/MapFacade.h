@@ -166,6 +166,8 @@ public: // modifying face attributes
 
 public: // modifying vertices
   virtual bool snapVertices(double snapTo) = 0;
+  virtual bool randomizeVertices(double direction) = 0;
+
 
   struct MoveVerticesResult
   {

@@ -629,6 +629,7 @@ public:
 
 public: // modifying vertices, declared in MapFacade interface
   bool snapVertices(double snapTo) override;
+  bool randomizeVertices(double snapTo) override;
 
   MoveVerticesResult moveVertices(
     std::vector<vm::vec3d> vertexPositions, const vm::vec3d& delta) override;

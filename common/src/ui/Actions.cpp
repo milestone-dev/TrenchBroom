@@ -510,6 +510,16 @@ void ActionManager::createViewActions()
       return context.hasDocument() && context.frame()->canSelect();
     },
   });
+  addAction(Action{
+    "Menu/Edit/Randomize Vertices",
+    QObject::tr("Randomize Vertices"),
+    ActionContext::Any,
+    QKeySequence{},
+    [](auto& context) { context.frame()->randomizeVertices(); },
+    [](const auto& context) {
+      return context.hasDocument() && context.frame()->canSnapVertices();
+    },
+  });
 
   /* ========== Duplication ========== */
   // these preference paths are structured like "action in 2D view; action in 3D view"

@@ -328,6 +328,7 @@ public:
 
   void snapVerticesToInteger();
   void snapVerticesToGrid();
+  void randomizeVertices();
   bool canSnapVertices() const;
 
   void replaceMaterial();

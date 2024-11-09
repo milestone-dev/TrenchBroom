@@ -3834,6 +3834,64 @@ bool MapDocument::snapVertices(const double snapTo)
   return true;
 }
 
+
+bool MapDocument::randomizeVertices(const double direction)
+{
+  size_t succeededBrushCount = 0;
+  size_t failedBrushCount = 0;
+
+  const auto allSelectedBrushes = allSelectedBrushNodes();
+  const bool applyAndSwapSuccess = applyAndSwap(
+    *this,
+    "Randomize Brush Vertices",
+    allSelectedBrushes,
+    collectContainingGroups(allSelectedBrushes),
+    kdl::overload(
+      [](mdl::Layer&) { return true; },
+      [](mdl::Group&) { return true; },
+      [](mdl::Entity&) { return true; },
+      [&](mdl::Brush& originalBrush) {
+        if (originalBrush.canSnapVertices(m_worldBounds, direction))
+        {
+          originalBrush.randomizeVertices(m_worldBounds, direction, pref(Preferences::UVLock))
+            | kdl::transform([&]() { succeededBrushCount += 1; })
+            | kdl::transform_error([&](auto e) {
+                error() << "Could not randomize vertices: " << e.msg;
+                failedBrushCount += 1;
+              });
+        }
+        else
+        {
+          failedBrushCount += 1;
+        }
+        return true;
+      },
+      [](mdl::BezierPatch&) { return true; }));
+
+  if (!applyAndSwapSuccess)
+  {
+    return false;
+  }
+  if (succeededBrushCount > 0)
+  {
+    info(kdl::str_to_string(
+      "Randomized vertices of ",
+      succeededBrushCount,
+      " ",
+      kdl::str_plural(succeededBrushCount, "brush", "brushes")));
+  }
+  if (failedBrushCount > 0)
+  {
+    info(kdl::str_to_string(
+      "Failed to randomize vertices of ",
+      failedBrushCount,
+      " ",
+      kdl::str_plural(failedBrushCount, "brush", "brushes")));
+  }
+
+  return true;
+}
+
 MapDocument::MoveVerticesResult MapDocument::moveVertices(
   std::vector<vm::vec3d> vertexPositions, const vm::vec3d& delta)
 {

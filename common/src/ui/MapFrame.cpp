@@ -1863,6 +1863,14 @@ void MapFrame::snapVerticesToInteger()
   }
 }
 
+void MapFrame::randomizeVertices()
+{
+  if (canSnapVertices())
+  {
+    m_document->randomizeVertices(m_document->grid().actualSize());
+  }
+}
+
 void MapFrame::snapVerticesToGrid()
 {
   if (canSnapVertices())

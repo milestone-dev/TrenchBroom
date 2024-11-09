@@ -192,6 +192,8 @@ public:
   bool canSnapVertices(const vm::bbox3d& worldBounds, double snapTo) const;
   Result<void> snapVertices(
     const vm::bbox3d& worldBounds, double snapTo, bool uvLock = false);
+  Result<void> randomizeVertices(
+    const vm::bbox3d& worldBounds, double distance, bool uvLock = false);
 
   // edge operations
   bool canMoveEdges(
